@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://3kcukyw61rm4"]
+
+[ext_resource type="Texture2D" uid="uid://cyl6d2mr3vfrd" path="res://assets/bg.png" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://basifaquiglq2" path="res://scenes/main.gd" id="1_tefeu"]
+[ext_resource type="Texture2D" uid="uid://i6560fkxpxmf" path="res://assets/bird1.png" id="2_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://c3imp22tssti" path="res://scenes/pipe.tscn" id="2_o6xl0"]
+[ext_resource type="Script" uid="uid://baj61vegglehj" path="res://scenes/bird.gd" id="2_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://dn2msraom7my2" path="res://assets/bird2.png" id="3_tbgi4"]
+[ext_resource type="AudioStream" uid="uid://ycbpccnp7ths" path="res://assets/sfx_point.wav" id="3_trceg"]
+[ext_resource type="Texture2D" uid="uid://bn8c13ta82mtg" path="res://assets/bird3.png" id="4_tefeu"]
+[ext_resource type="AudioStream" uid="uid://bo7ndmg68wssq" path="res://assets/sfx_wing.wav" id="5_eb6dy"]
+[ext_resource type="Texture2D" uid="uid://dibv0f0maa3gw" path="res://assets/ground.png" id="8_tipki"]
+[ext_resource type="Texture2D" uid="uid://djqldkribddgj" path="res://assets/restart.png" id="11_ya4ey"]
+[ext_resource type="AudioStream" uid="uid://c6kjs06loydi3" path="res://assets/sfx_hit.wav" id="14_a8y0u"]
+[ext_resource type="AudioStream" uid="uid://but15otbx33fx" path="res://assets/sfx_die.wav" id="15_jkv2x"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5bdln"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_jyhfs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tbgi4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_tefeu")
+}],
+"loop": 1,
+"name": &"flap",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5bdln"]
+radius = 24.0
+height = 48.0
+
+[sub_resource type="GDScript" id="GDScript_trceg"]
+script/source = "extends Area2D
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5bdln"]
+size = Vector2(1724, 157)
+
+[sub_resource type="GDScript" id="GDScript_a8y0u"]
+script/source = "extends Timer
+"
+
+[sub_resource type="GDScript" id="GDScript_ya4ey"]
+script/source = "extends Panel
+"
+
+[node name="Main" type="Node2D" unique_id=972450358]
+script = ExtResource("1_tefeu")
+pipe = ExtResource("2_o6xl0")
+moveSpeed = 200
+
+[node name="Background" type="Sprite2D" parent="." unique_id=403980663]
+position = Vector2(431, 385)
+texture = ExtResource("1_o5qli")
+
+[node name="Bird" type="CharacterBody2D" parent="." unique_id=2098564509]
+position = Vector2(240, 432)
+script = ExtResource("2_tbgi4")
+gravity = 2000.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bird" unique_id=532326914]
+z_index = 2
+sprite_frames = SubResource("SpriteFrames_5bdln")
+animation = &"flap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bird" unique_id=1539453961]
+shape = SubResource("CapsuleShape2D_5bdln")
+
+[node name="Ground" type="Area2D" parent="." unique_id=1468953691]
+z_index = 2
+position = Vector2(605, 856)
+script = SubResource("GDScript_trceg")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=1123516379]
+z_index = 3
+texture = ExtResource("8_tipki")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1145730768]
+position = Vector2(3, 1.5)
+shape = SubResource("RectangleShape2D_5bdln")
+
+[node name="Timer" type="Timer" parent="." unique_id=728844100]
+wait_time = 2.0
+script = SubResource("GDScript_a8y0u")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1630405682]
+
+[node name="SCORE lABEL" type="Label" parent="CanvasLayer" unique_id=1042428197]
+z_index = 10
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -33.0
+offset_top = 5.0
+offset_right = 53.0
+offset_bottom = 64.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+text = "
+Score: 0"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="CanvasLayer" unique_id=657293623]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_ya4ey")
+
+[node name="gameover" type="Label" parent="CanvasLayer/Panel" unique_id=1821248394]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -247.0
+offset_top = -164.0
+offset_right = 248.0
+offset_bottom = -102.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "GAME OVER"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="score" type="Label" parent="CanvasLayer/Panel" unique_id=673232464]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -247.0
+offset_top = -119.0
+offset_right = 248.0
+offset_bottom = -57.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "score - 0"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="Button" type="Button" parent="CanvasLayer/Panel" unique_id=725812821]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -25.0
+offset_right = 64.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+icon = ExtResource("11_ya4ey")
+
+[node name="Fly Audio Stream" type="AudioStreamPlayer2D" parent="." unique_id=701408918]
+stream = ExtResource("5_eb6dy")
+
+[node name="Point Audio Stream" type="AudioStreamPlayer2D" parent="." unique_id=746724448]
+stream = ExtResource("3_trceg")
+
+[node name="Hit Audio Stream" type="AudioStreamPlayer2D" parent="." unique_id=1174097910]
+stream = ExtResource("14_a8y0u")
+
+[node name="Die Audio Stream" type="AudioStreamPlayer2D" parent="." unique_id=232781282]
+stream = ExtResource("15_jkv2x")
+
+[connection signal="body_entered" from="Ground" to="." method="_on_ground_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="CanvasLayer/Panel/Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://3kcukyw61rm4"]
+
+[ext_resource type="Texture2D" uid="uid://cyl6d2mr3vfrd" path="res://assets/bg.png" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://basifaquiglq2" path="res://scenes/main.gd" id="1_tefeu"]
+[ext_resource type="Texture2D" uid="uid://i6560fkxpxmf" path="res://assets/bird1.png" id="2_jyhfs"]
+[ext_resource type="PackedScene" uid="uid://c3imp22tssti" path="res://scenes/pipe.tscn" id="2_o6xl0"]
+[ext_resource type="Script" uid="uid://baj61vegglehj" path="res://scenes/bird.gd" id="2_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://dn2msraom7my2" path="res://assets/bird2.png" id="3_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://bn8c13ta82mtg" path="res://assets/bird3.png" id="4_tefeu"]
+[ext_resource type="Script" uid="uid://dfcptqyvjgqma" path="res://scenes/ground.gd" id="8_choun"]
+[ext_resource type="Texture2D" uid="uid://dibv0f0maa3gw" path="res://assets/ground.png" id="8_tipki"]
+[ext_resource type="Script" uid="uid://b15nykqb2gahp" path="res://scenes/timer.gd" id="9_85g3d"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5bdln"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_jyhfs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tbgi4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_tefeu")
+}],
+"loop": 1,
+"name": &"flap",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5bdln"]
+radius = 24.0
+height = 48.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5bdln"]
+size = Vector2(1724, 157)
+
+[node name="Main" type="Node2D" unique_id=972450358]
+script = ExtResource("1_tefeu")
+pipe = ExtResource("2_o6xl0")
+screensize = null
+moveSpeed = 200
+
+[node name="Background" type="Sprite2D" parent="." unique_id=403980663]
+position = Vector2(431, 385)
+texture = ExtResource("1_o5qli")
+
+[node name="Bird" type="CharacterBody2D" parent="." unique_id=2098564509]
+position = Vector2(240, 432)
+script = ExtResource("2_tbgi4")
+gravity = 2000.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bird" unique_id=532326914]
+z_index = 2
+sprite_frames = SubResource("SpriteFrames_5bdln")
+animation = &"flap"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bird" unique_id=1539453961]
+shape = SubResource("CapsuleShape2D_5bdln")
+
+[node name="Ground" type="Area2D" parent="." unique_id=1468953691]
+z_index = 2
+position = Vector2(605, 856)
+script = ExtResource("8_choun")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ground" unique_id=1123516379]
+z_index = 3
+texture = ExtResource("8_tipki")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1145730768]
+position = Vector2(3, 1.5)
+shape = SubResource("RectangleShape2D_5bdln")
+
+[node name="Timer" type="Timer" parent="." unique_id=728844100]
+wait_time = 2.0
+script = ExtResource("9_85g3d")
+
+[node name="SCORE lABEL" type="Label" parent="." unique_id=1042428197]
+z_index = 10
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 399.0
+offset_top = 5.0
+offset_right = 485.0
+offset_bottom = 64.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+text = "
+Score: 0"
+uppercase = true
+
+[connection signal="body_entered" from="Ground" to="." method="_on_ground_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

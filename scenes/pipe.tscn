@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://c3imp22tssti"]
+
+[ext_resource type="Texture2D" uid="uid://dugdrndn5qo3b" path="res://assets/pipe.png" id="1_8x3ej"]
+[ext_resource type="Script" uid="uid://tjmjd47ffqcw" path="res://scenes/pipe.gd" id="1_arpqm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nmd57"]
+size = Vector2(61, 558)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8p0di"]
+size = Vector2(20, 149)
+
+[node name="Pipe" type="Area2D" unique_id=1392515167]
+position = Vector2(0, 468)
+rotation = -3.1415927
+script = ExtResource("1_arpqm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1427511218]
+position = Vector2(-2.5000575, 350)
+shape = SubResource("RectangleShape2D_nmd57")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1732887041]
+z_index = 1
+position = Vector2(-5.7418918e-05, 350)
+texture = ExtResource("1_8x3ej")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=1261416589]
+position = Vector2(2.0000625, -350)
+shape = SubResource("RectangleShape2D_nmd57")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1288764719]
+z_index = 1
+position = Vector2(2.0000622, -350)
+rotation = 3.1415927
+texture = ExtResource("1_8x3ej")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=858836294]
+position = Vector2(-48, 1.9999958)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1394669661]
+position = Vector2(-7.6293945e-06, -2.5)
+shape = SubResource("RectangleShape2D_8p0di")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
